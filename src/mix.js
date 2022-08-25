@@ -384,11 +384,12 @@ async function promiseSpeaker() {
   await axios.post(`${BASE_URL_2}/getRoomById`, { roomid: id }).then(async r => {
 
 
-    let x = await r?.data?.roomdata?.speakerid
-    speakerid = x
+    let speaker = await r?.data?.roomdata?.speakerid
+    const retrivedDotArray = r?.data?.roomdata?.dot
+    speakerid = speaker
 
 
-    await axios.put(`${BASE_URL_1}/updateDotInUser`, { userid: speakerid, roomid: id, dot: grid })
+    await axios.put(`${BASE_URL_1}/updateDotInUser`, { userid: speakerid, roomid: id, dot: retrivedDotArray })
 
   }
   )
@@ -404,7 +405,7 @@ async function postGrid(e) {
   console.log(grid)
   console.log('id', id)
   console.log('retrivedDotArray', retrivedDotArray)
-  await axios.put(`${BASE_URL_2}/updateDotInRoom`, { roomid: id, dot: grid })
+  // await axios.put(`${BASE_URL_2}/updateDotInRoom`, { roomid: id, dot: grid })
   promiseSpeaker()
 
 
