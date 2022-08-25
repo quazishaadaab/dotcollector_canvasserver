@@ -277,7 +277,6 @@ function drawInput(x, y) {
 
     const tempDot = grid[x - 1][y - 1]
     console.log('tempdot', tempDot)
-    console.log('frid', grid[x - 1][y - 1])
     if (e.keyCode === 13) { //13 in ENTER key
 
       inputTextValue = e.target.value
@@ -389,7 +388,7 @@ async function promiseSpeaker() {
     speakerid = x
 
 
-    await axios.put(`${BASE_URL_1}/updateDotInUser`, { userid: speakerid, roomid: id, dot: retrivedDotArray })
+    await axios.put(`${BASE_URL_1}/updateDotInUser`, { userid: speakerid, roomid: id, dot: grid })
 
   }
   )
@@ -404,7 +403,7 @@ async function postGrid(e) {
   console.log("submitted")
   console.log(grid)
   console.log('id', id)
-  await axios.put(`${BASE_URL_2}/updateDotInRoom`, { roomid: id, dot: retrivedDotArray })
+  await axios.put(`${BASE_URL_2}/updateDotInRoom`, { roomid: id, dot: grid })
   promiseSpeaker()
 
 
