@@ -17,6 +17,11 @@ let mousePointerRow
 
 let individualDot // type object
 
+
+var string = JSON.stringify(window.location.pathname)
+var id = string.substring(8, 44)
+
+
 // dotrouter
 const BASE_URL_1 = 'https://sleepy-dawn-45361.herokuapp.com' || "http://localhost:2000"
 // router
@@ -209,7 +214,7 @@ console.log('realid',id)
 async function loadDotsbyRoomId() {
 
 
-  await axios.post(`${BASE_URL_2}/getRoomById`, { roomid: '25f43e71-589b-4a43-a35d-a5e4620b9c96' }).then((response) => {
+  await axios.post(`${BASE_URL_2}/getRoomById`, { roomid: id }).then((response) => {
 
     const dotarray = response?.data?.roomdata?.dot
     console.log(dotarray)
@@ -353,8 +358,7 @@ drawLine(6, 4, 100, 100, 400, 600)
 
 
 
-var string = JSON.stringify(window.location.pathname)
-var id = string.substring(8, 44)
+
 
 
 console.log(id, grid)
@@ -414,7 +418,7 @@ async function postGrid(e) {
 async function postDotbyRowandCol(tempDot){
 
 
-await axios.put(`https://salty-tor-00815.herokuapp.com/updateDotRowandCol`,{roomid:'25f43e71-589b-4a43-a35d-a5e4620b9c96', dot:tempDot})
+await axios.put(`https://salty-tor-00815.herokuapp.com/updateDotRowandCol`,{roomid:id, dot:tempDot})
 
 }
 // DataService.postDot(gridDoc)
