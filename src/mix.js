@@ -21,6 +21,8 @@ let individualDot // type object
 var string = JSON.stringify(window.location.pathname)
 var id = string.substring(8, 44)
 
+var retrivedDotArray
+
 
 // dotrouter
 const BASE_URL_1 = 'https://sleepy-dawn-45361.herokuapp.com' || "http://localhost:2000"
@@ -217,6 +219,8 @@ async function loadDotsbyRoomId() {
   await axios.post(`${BASE_URL_2}/getRoomById`, { roomid: id }).then((response) => {
 
     const dotarray = response?.data?.roomdata?.dot
+    retrivedDotArray=dotarray
+
     console.log(dotarray)
 
     //assign grid variable to dotarray(pulled grid from database)
@@ -385,7 +389,7 @@ async function promiseSpeaker() {
     speakerid = x
 
 
-    await axios.put(`${BASE_URL_1}/updateDotInUser`, { userid: speakerid, roomid: id, dot: grid })
+    await axios.put(`${BASE_URL_1}/updateDotInUser`, { userid: speakerid, roomid: id, dot: retrivedDotArray })
 
   }
   )
@@ -400,7 +404,7 @@ async function postGrid(e) {
   console.log("submitted")
   console.log(grid)
   console.log('id', id)
-  await axios.put(`${BASE_URL_2}/updateDotInRoom`, { roomid: id, dot: grid })
+  await axios.put(`${BASE_URL_2}/updateDotInRoom`, { roomid: id, dot: retrivedDotArray })
   promiseSpeaker()
 
 
