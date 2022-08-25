@@ -221,7 +221,7 @@ async function loadDotsbyRoomId() {
     const dotarray = response?.data?.roomdata?.dot
     retrivedDotArray=dotarray
 
-    console.log(dotarray)
+    console.log('dotarrray',dotarray)
 
     //assign grid variable to dotarray(pulled grid from database)
     dotarray?.map(cols => {
