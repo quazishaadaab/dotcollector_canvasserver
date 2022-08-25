@@ -422,7 +422,7 @@ async function postGrid(e) {
 async function postDotbyRowandCol(tempDot){
 
 
-await axios.put(`${process.env.BASE_SERVER}/updateDotRowandCol`,{roomid:id, dot:tempDot})
+await axios.put(`https://salty-tor-00815.herokuapp.com/updateDotRowandCol`,{roomid:id, dot:tempDot})
 
 }
 // DataService.postDot(gridDoc)
