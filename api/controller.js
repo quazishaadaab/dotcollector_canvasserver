@@ -1,3 +1,5 @@
+// import {sendGrid} from "../src/mix.js"
+
 import ControllerDAO from "../dao/controllerDAO.js";
 class Controller {
   // constructor(realData){
@@ -19,6 +21,12 @@ static async getAllRooms(req, res, next) {
   const rooms = await ControllerDAO.getAllRooms();
   res.json(rooms);
   
+}
+
+
+static async passNewGrid(req,res,next){
+  const initialGrid= 
+  res.json(initialGrid)
 }
 
 

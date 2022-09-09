@@ -3,6 +3,7 @@
 // import axios from 'axios';
 // import DataService from "./services/service.js"
 
+// import sandbox from "../server.js"
 
 var c = document.getElementById("mycanvas")
 var ctx = c.getContext("2d");
@@ -170,7 +171,7 @@ class Dot {
 
 
 
-
+// axios.put(`${BASE_URL_2}/updateDotInRoom`, { roomid: id, dot: grid })
 
 function populateGridFoundation() {
 
@@ -186,10 +187,24 @@ function populateGridFoundation() {
 
     }
   }
+//we need the below code to insert a new intial grid that is populated(allwhite) for us to manipulate
+  // axios.put(`${BASE_URL_2}/updateDotInRoom`, { roomid: id, dot: grid })
 
+  //the code below was just used to send the grid to our frontend through our api but we couldnt get it working
+// sandbox.get("/passInitialGrid",(req,res)=>{
+
+//   res.json({initialGrid:grid})
+
+// })
 }
 
-populateGridFoundation()
+
+
+   populateGridFoundation()
+
+
+
+   
 
 
 function drawRectangle(row, column, x, y, color, gap_h, gap_v, value) {
@@ -376,6 +391,7 @@ console.log(id, grid)
 
 
 var buffer
+//this is the speaker id (user whos dot gets registered)
 let speakerid
 // let sid=  await (r?.data?.roomdata?.speakerid)
 
@@ -402,10 +418,16 @@ async function promiseSpeaker() {
 async function postGrid(e) {
 
   console.log("submitted")
-  console.log(grid)
+  console.log('FFFFF',grid)
   console.log('id', id)
   console.log('retrivedDotArray', retrivedDotArray)
-  // await axios.put(`${BASE_URL_2}/updateDotInRoom`, { roomid: id, dot: grid })
+//when we click submit, we want to update the dot in user , not in rooms. the dot is already being inserted in rooms when we
+//click enter . we want to update/insert the dot in user when someone clicks post dot
+
+
+  await axios.put(`${BASE_URL_1}/updateDotInUser`, { userid: speakerid, dot: retrivedDotArray })
+
+
   promiseSpeaker()
 
 
@@ -423,7 +445,7 @@ async function postGrid(e) {
 async function postDotbyRowandCol(tempDot){
 
 
-await axios.put(`https://salty-tor-00815.herokuapp.com/updateDotRowandCol`,{roomid:id, dot:tempDot})
+await axios.put(`${BASE_URL_2}/updateDotRowandCol`,{roomid:id, dot:tempDot})
 
 }
 // DataService.postDot(gridDoc)

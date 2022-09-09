@@ -21,6 +21,8 @@ dotrouter.route("/updateDotInUser").put(Controller.updateDotInUser)
 dotrouter.route("/postDotInUser").put(Controller.postDotInUser)
 dotrouter.route("/getAllRooms").get(Controller.getAllRooms)
 
+dotrouter.route("/passNewGrid").get(Controller.passNewGrid)
+
 // getdotcollection
 
 

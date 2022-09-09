@@ -54,7 +54,10 @@ const __dirname = path.resolve();
 
 // var id= Controller.giveData()
 
-const BASE_URL = "https://salty-tor-00815.herokuapp.com"
+const BASE_URL =  "http://localhost:2000";
+
+// https://base-backend.fly.dev
+// "https://salty-tor-00815.herokuapp.com"
 // "http://localhost:5000";
 // const retriveArray()=>{
 
@@ -113,10 +116,10 @@ try {
   sandbox.get("/launch", async (req, res) => {
 
 
-    await axios.get(`https://salty-tor-00815.herokuapp.com/getAllRooms`).then(response => {
+    await axios.get(`https://base-backend.fly.dev/getAllRooms`).then(response => {
 
       getRooms(response)
-      console.log(response)
+      console.log('rooms',response)
       res.json(response?.data)
 
     })
