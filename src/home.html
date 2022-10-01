@@ -3,6 +3,8 @@
 
   <head>
   <meta charset='utf-8'/>
+  <!-- <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"> -->
+
   <title>HTML Canvas Demo</title>
   <link rel="stylesheet" href="home.css">
   </head>
@@ -19,11 +21,13 @@
 
 <body id="main">
 
-  <canvas id="mycanvas" width=400 height=600 style="border:0.5px  solid #000000 ;border-radius:15px " onClick="mousePressed(event)">
+  <canvas id="mycanvas"  style="border:0.5px solid black; border-radius:15px;position:absolute;" onClick="mousePressed(event)">
 
 </canvas>
-<button type="submit" class='postButton'  onClick="postGrid(event)"><span class='text'>Post Dot</span>
+
+<button type="submit" class='postButton' onClick="postGrid(event)"><span class='text'>Post Dot</span>
 </button>
+<!-- <button type="submit" onClick="postGrid(event)" class="absolute mt-3 focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"><span class='text'>Post Dot</span> </button> -->
 
 
 

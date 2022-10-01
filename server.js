@@ -96,8 +96,7 @@ async function getRooms(response, res, req) {
 
 
 
-
-    createSandboxElement(r?.roomid);
+ createSandboxElement(r?.roomid);
 
     // tempid=await buffer2
     // console.log('buffer2:'+buffer2 + " tempid: "+tempid)
