@@ -1,10 +1,20 @@
 
+
+
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const spawners = require('child_process').spawn;
+
+
+
 let rooms;
 let users;
 let room_id;
 let room_name;
 let gridId;
 let grid;
+
+
 export default class ControllerDAO {
   static async injectDB(conn) {
     if (rooms) {
@@ -33,25 +43,25 @@ export default class ControllerDAO {
     
   }
 
-static async injectDotInUser(userid,roomid,dot){
-try {
+// static async injectDotInUser(userid,roomid,dot){
+// try {
 
-  // javascript canot process back ticks in runtime, so we need to use brackets around it
+//   // javascript canot process back ticks in runtime, so we need to use brackets around it
 
-dot.map(async array=>{
+// dot.map(async array=>{
 
-  await users.updateMany({userid:userid},
-    {$push:{[ `dotCollection.${roomid}`]:array}})
+//   await users.updateMany({userid:userid},
+//     {$push:{[ `dotCollection.${roomid}`]:array}})
 
-})
-}
-catch(e){
-  console.error(`Unable to post review: ${e}`);
-  return { error: e };
+// })
+// }
+// catch(e){
+//   console.error(`Unable to post review: ${e}`);
+//   return { error: e };
 
-}
+// }
 
-}
+// }
 
 
 
@@ -69,24 +79,79 @@ static async getAllRooms() {
 
 
 
+static async updateRatings(userid){
 
+try{
 
+let out=''
+  const data_to_pass_in = await userid;
 
+  //SEND
+  //this is input data being passed to python 
+  const python_process = spawners('python3', ['/Users/quazishaadaab/Desktop/programming-projects/backend-static_canvas/dao/calculateRatings_preprod.py', data_to_pass_in])
 
-static async updateDotInUser(userid,roomid,dot){
+  //RECEIVE
+  //this is the data being received from python output.
+  python_process.stdout.on('data', (data) => {
 
-  try {
-
-
-await users.updateMany({userid:userid},
-{$set:{[ `dotCollection.${roomid}`]:dot}})
+    let buffer= JSON.parse(data.toString())
+    console.log("Data received from python script : ",  JSON.parse(data.toString()));
+    users.updateMany({userid:userid},{$set:{'ratings': buffer}})
+        
+  })
 
 }
 catch(e){
-console.error(`Unable to post review: ${e}`);
-return { error: e };
+  console.log(e)
+}
+
 
 }
+
+
+
+
+
+
+
+
+
+
+static async updateDotInUser(userid,roomid,dot,attribute_id){
+
+  try {
+    // javascript canot process back ticks in runtime, so we need to use brackets around it
+
+    const dotCollectionDoc = {"attribute_id":attribute_id,"room_id":roomid,"dot":dot}
+    await users.updateMany(
+      { userid: userid },
+      { $set: { [`dotCollection.${roomid}`]: dotCollectionDoc } },
+      {upsert:true}
+    );
+
+    // dot.map(async (array) => {
+    //   await users.updateMany(
+    //     { userid: userid },
+    //     { $push: { [`dotCollection.${roomid}`]: array } }
+    //   );
+    // });
+  } catch (e) {
+    console.error(`Unable to post review: ${e}`);
+    return { error: e };
+  }
+  
+//   try {
+
+
+// await users.updateMany({userid:userid},
+// {$set:{[ `dotCollection.${roomid}`]:dot}})
+
+// }
+// catch(e){
+// console.error(`Unable to post review: ${e}`);
+// return { error: e };
+
+// }
 // try {
 
 
@@ -113,10 +178,10 @@ return { error: e };
 
 
 
-  static async getAvgDot(userid){
+  static async getRatings(userid){
 
     try{
-     const cursor= await users.find({'userid':userid}).toArray()
+     const cursor= await users.find({'userid':userid }).toArray()
       return await (cursor[0])
 
     } catch(e){console.log(e)}

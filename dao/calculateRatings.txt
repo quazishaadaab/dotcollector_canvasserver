@@ -1,0 +1,167 @@
+
+
+
+import requests
+import sys 
+import json
+# from "dotCollectionTests" import calculateAvgDotPython
+# from rooms.dotCollectionTests import dotCollectionTests
+
+CANVAS_BACKEND="http://localhost:2000"
+BASE_BACKEND = "http://localhost:8000"
+
+def calculateAvgDotPython(userid):
+    response=requests.post(BASE_BACKEND+"/getUserById",json={"userid":userid})
+    dic=response.json()
+
+
+    final=[]
+
+    def cleanDot(dot):
+        for row in dot:
+            
+            column_array_values=[]
+            for column in row :
+                if column:
+                    column_array_values.append(int(column['value'])) #since the value is a string in the database, we convert it to an int
+                    # print(column)
+                else:
+                    column_array_values.append(0)
+            # print(column_array_values)
+            final.append(column_array_values)
+        # print(final)
+        return final
+
+
+
+
+    # NEED TO CREATE ATTRIBUTE LIST NEXT
+    attributes=set() #set
+
+
+    dotCollect=[]
+    for roomid in dic["dotCollection"]:
+        attribute_id=dic["dotCollection"][roomid]["attribute_id"]
+        attributes.add(attribute_id) #add attribute_id to the set(unique attribute ids only added )
+        dot=cleanDot(dic["dotCollection"][roomid]["dot"])
+        ent={"attribute_id":attribute_id,"room_id":roomid,"dot":dot} 
+        dotCollect.append(ent)
+
+
+    dotCollection = [
+    {
+        "attribute_id":1,
+        "room_id":1,
+        "dot":[[9,6,7,3] ,[4,3,6,2],[1,1,1,5]]
+
+    },{
+        "attribute_id":2,
+        "room_id":2,
+        "dot":[[9,6,7,4] ,[4,3,6,8],[1,1,1,5]]
+
+
+    },{
+
+        "attribute_id":1,
+        "room_id":3,
+        "dot":[[9,6,7,3] ,[4,3,6,2],[1,1,1,5]]
+
+    },
+
+
+    ]
+
+    dotCollection=dotCollect
+
+
+    # attri: 1 
+
+    # 9 6 7 3
+    # 4 3 6 2
+    # 1 1 1 5
+
+    # 9 6 7 3
+    # 4 3 6 2
+    # 1 1 1 5
+
+
+    #  TEST 1 : Add all similar attribute id content
+
+
+    averages=[]
+    # dotCollection?.map(async(dot)=>{
+
+    #     # //set is now populated with all unique attribute ids
+    #     await attributes.insert(dot?.attribute_id)  # attributes={1,2}
+
+    # })
+
+
+    for i in attributes :
+        buffer=[] #create a new buffer for each attribute
+        main_buffer=[]
+        peers=0
+        skills=0
+        for entities in dotCollection:
+            #i is the attribute id which is constantly moving/changing, aggregating similar attribute_id dots
+            if(entities["attribute_id"]==i):
+                for dot_array in entities["dot"] :
+                    #this is wrong, change peers.although we never use it
+                    peers= len(dot_array)
+                    # skills= len(api_call(attribute_id).names)
+                    skills=len(dot_array) #column for now is 3 ( 3 skills)
+                    buffer.append(dot_array)
+            else : 
+                continue
+        
+
+        # //do buffer calculations here. below is first buffer
+        #print(buffer)
+        for individual in buffer:
+            for value in individual:
+                main_buffer.append(value)
+        
+        # print(peers)
+        # print(main_buffer)
+
+        sum_of_skill=0
+        #hops = peers * number of attribute ids. its how many times the pointer hops around the main_buffer
+        hops=0 
+        res=[]
+
+
+        for j in range(0,4):
+            # reset sum of specefic skill after use/when moving to next skill 
+            sum_of_skill=0
+            hops=0 #reset hop count(hops) everytime new skill is moved on/being calculated
+
+            for k in range(j,len(main_buffer),skills): #0-17
+                # print(j)
+                hops=hops+1
+                sum_of_skill=main_buffer[k]+sum_of_skill
+            # print(hops)
+            res.append(sum_of_skill/hops) 
+            
+
+
+        # Constructed a final array that contains the attribute id and its averages.
+        resDoc={"attribute_id":i, "dot" :res}
+        averages.append(resDoc)
+   
+
+        
+
+    output=averages
+    return output
+    #print({"rating_array":averages  , "userid":userid}) #this will send a stdout of the averages to controllerDAO.js to be uploaded into mongodb
+    #print('hello')
+    #requests.put(CANVAS_BACKEND+"/updateRatings",json={"rating_array":averages  , "userid":userid})
+ 
+# sys.argv is the array that contains all the input data being sent from javascript file
+# input = sys.argv[1] #accesses the first element of input array
+input='a7055ad8652c81b0ba9f79f0e7dce8d45648a6f1'
+print(json.dumps(calculateAvgDotPython(input)))
+
+
+
+    

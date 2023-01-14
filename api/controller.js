@@ -8,12 +8,13 @@ class Controller {
   // }
 
 
-static async getAvgDot(req,res,next){
+static async getRatings(req,res,next){
 
   const userid =await req.body.userid
 
-const userData =await ControllerDAO.getAvgDot(userid)
-res.json({userData}?.userData?.avgDot)
+const userData =await ControllerDAO.getRatings(userid)
+
+ res.json({userData}?.userData?.ratings)
 }
 
 
@@ -42,25 +43,38 @@ static async getDotCollectionCount(req,res,next){
 
 // users
 
-static async postDotInUser(req, res, next) {
-    const dot = await req.body.dot 
-    const roomid=await req.body.roomid
-    const userid=await req.body.userid
+// static async postDotInUser(req, res, next) {
+//     const dot = await req.body.dot 
+//     const roomid=await req.body.roomid
+//     const userid=await req.body.userid
+  
 
-    res.json(req?.body)
-    ControllerDAO.injectDotInUser(userid,roomid,dot)
-  }
+//     res.json(req?.body)
+//     ControllerDAO.injectDotInUser(userid,roomid,dot)
+//   }
 
 
   static async updateDotInUser(req, res, next) {
     const dot = await req.body.dot 
     const roomid=await req.body.roomid
     const userid=await req.body.userid
+    const attribute_id = await req.body.attribute_id
 
     res.json(req?.body)
-    ControllerDAO.updateDotInUser(userid,roomid,dot)
+    ControllerDAO.updateDotInUser(userid,roomid,dot,attribute_id)
   }
 
+
+  static async updateRatings(req,res,next){
+    
+    const userid = await req.body.userid
+
+    res.json(req?.body)
+
+    ControllerDAO.updateRatings(userid)
+
+
+  }
 
 
 

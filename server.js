@@ -115,7 +115,7 @@ try {
   sandbox.get("/launch", async (req, res) => {
 
 
-    await axios.get(`https://base-backend.fly.dev/getAllRooms`).then(response => {
+    await axios.get(`${BASE_URL}/getAllRooms`).then(response => {
 
       getRooms(response)
       console.log('rooms',response)

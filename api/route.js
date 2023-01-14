@@ -12,19 +12,17 @@ import Controller from "./controller.js"
 // getRoomById
 
 
-dotrouter.route("/getAvgDot").post(Controller.getAvgDot)
 dotrouter.route("/getDotCollectionCount").post(Controller.getDotCollectionCount)
 
 
 dotrouter.route("/updateDotInUser").put(Controller.updateDotInUser)
-// this is useless and the dot insertion is messed up.
-dotrouter.route("/postDotInUser").put(Controller.postDotInUser)
 dotrouter.route("/getAllRooms").get(Controller.getAllRooms)
 
 dotrouter.route("/passNewGrid").get(Controller.passNewGrid)
 
-// getdotcollection
-
+// post ratings
+dotrouter.route("/updateRatings").put(Controller.updateRatings)
+dotrouter.route("/getRatings").post(Controller.getRatings)
 
 
 // router.route("./postDotInUser").post(Controller.postDotInUser)

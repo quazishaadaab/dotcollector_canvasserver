@@ -44,7 +44,8 @@ async function create() {
 
 
   // dotrouter
-  const BASE_URL_1 = 'https://sleepy-dawn-45361.herokuapp.com' || "http://localhost:2000"
+  // 'https://sleepy-dawn-45361.herokuapp.com' || 
+  const BASE_URL_1 ="http://localhost:2000"
   // router
   // const BASE_URL_2 = 'https://salty-tor-00815.herokuapp.com' || `http://localhost:${process.env.PORT_BASE}`
 
@@ -62,13 +63,16 @@ async function create() {
     const { data: { roomdata: { attributeid,users } } } = await axios.post(`${BASE_URL_2}/getRoomById`, { roomid: id })
 
     const response = await axios.post(`${BASE_URL_2}/getAttribute`, { attributeid: attributeid })
-    console.log('mithu', response?.data[0]?.attributes?.length)
+    console.log('mithu', response?.data?.attributes?.length)
 
-    //this is the retrived attribute length being pulled from the database
-    const number_of_attributes = response?.data[0]?.attributes?.length
+    // this is the retrived attribute length being pulled from the database
+    const number_of_attributes = response?.data?.attributes?.length
     const number_of_rows = Object.keys(users)?.length
 
 
+    // testing set
+    // const number_of_attributes = 13
+    // const number_of_rows = 25
 
     if (number_of_attributes > 13 || number_of_rows>8 ) {
       // if attributes in the list are greater than 7 ( more than 7 attributes), than make dots/cubes smaller
@@ -82,9 +86,9 @@ async function create() {
     }
    
 
-    wide = (response?.data[0]?.attributes?.length) * pixel_width
-    long = Object.keys(users)?.length* pixel_width
-
+     wide = (number_of_attributes) * pixel_width
+    long = (number_of_rows)* pixel_width
+    // long = 15*pixel_width
 
 
   }
@@ -467,12 +471,15 @@ async function create() {
       ctx.moveTo(gap_h * i, 0)
       ctx.lineTo(gap_h * i, long)
 
+      ctx.strokeStyle = "#ffffff";
+
       ctx.stroke()
     }
     for (let j = 1; j <= rows - 1; j++) {
 
       ctx.moveTo(0, gap_v * j)
       ctx.lineTo(wide, gap_v * j)
+      ctx.strokeStyle = "#ffffff";
 
       ctx.stroke()
     }
@@ -568,6 +575,7 @@ async function create() {
   let speakerid
   // let sid=  await (r?.data?.roomdata?.speakerid)
 
+  //doesnt get execute
   async function promiseSpeaker() {
 
     await axios.post(`${BASE_URL_2}/getRoomById`, { roomid: id }).then(async r => {
@@ -587,7 +595,7 @@ async function create() {
 
   // getSpeaker().then(async r=>{ speakerid=await r })
 
-
+//doesnt get execute
   async function postGrid(e) {
 
     console.log("submitted")
