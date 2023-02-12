@@ -13,6 +13,7 @@ async function create() {
 
   var c = document.getElementById("mycanvas")
   var ctx = c.getContext("2d");
+  
 
   let pixel_width = 100
   //this scaling factor will be used to divide/shrink the dots if number of attributes is over 7
@@ -66,7 +67,7 @@ async function create() {
     console.log('mithu', response?.data?.attributes?.length)
 
     // this is the retrived attribute length being pulled from the database
-    const number_of_attributes = response?.data?.attributes?.length
+    const number_of_attributes = response?.data?.attributes?.length 
     const number_of_rows = Object.keys(users)?.length
 
 
@@ -99,6 +100,7 @@ async function create() {
 
   console.log('sadiya', wide)
 
+  //repeated , already declared c as mycanvas
   var canvas = document.getElementById('mycanvas');
 
   if (wide > 600) {
@@ -130,6 +132,7 @@ async function create() {
     canvas.style.height = `${long}px`;
   }
 
+//set background color of whole canvas
 
 
 
@@ -203,16 +206,16 @@ async function create() {
 
 
 
-
+//dont use anymore
   function setup() {
     createCanvas(s.wide, s.long);
     noLoop()
 
 
   }
-
+//dont use anymore
   function draw() {
-    background("grey");
+    background('red');
     //   let mousePointerCol =ColSelector(winMouseX,s.cols,s.wide)
     // let mousePointerRow=RowSelector(winMouseY,s.rows,s.long)
 
