@@ -50,7 +50,7 @@ async function create() {
   // router
   // const BASE_URL_2 = 'https://salty-tor-00815.herokuapp.com' || `http://localhost:${process.env.PORT_BASE}`
 
-  const BASE_URL_2 = `http://localhost:8000`
+  const BASE_URL_2 = `http://localhost:8001`
 
   //assign row and col length here
 
@@ -67,9 +67,10 @@ async function create() {
     console.log('mithu', response?.data?.attributes?.length)
 
     // this is the retrived attribute length being pulled from the database
-    const number_of_attributes = response?.data?.attributes?.length 
-    const number_of_rows = Object.keys(users)?.length
+    const number_of_attributes = Object.keys(users)?.length
+    const number_of_rows = response?.data?.attributes?.length 
 
+  
 
     // testing set
     // const number_of_attributes = 13
@@ -88,7 +89,7 @@ async function create() {
    
 
      wide = (number_of_attributes) * pixel_width
-    long = (number_of_rows)* pixel_width
+    long = (number_of_rows)* pixel_width 
     // long = 15*pixel_width
 
 

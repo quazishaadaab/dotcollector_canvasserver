@@ -88,7 +88,7 @@ let out=''
 
   //SEND
   //this is input data being passed to python 
-  const python_process = spawners('python3', ['/Users/quazishaadaab/Desktop/programming-projects/backend-static_canvas/dao/calculateRatings_preprod.py', data_to_pass_in])
+  const python_process = spawners('python3', ['/Users/quazishaadaab/Desktop/programming-projects/backend-static_canvas/dao/calculateRatings_preprod-v2.py', data_to_pass_in])
 
   //RECEIVE
   //this is the data being received from python output.
