@@ -54,7 +54,9 @@ const __dirname = path.resolve();
 
 // var id= Controller.giveData()
 
-const BASE_URL =  "http://localhost:2000";
+const BASE_URL =  "https://backend-static-canvas.fly.dev";
+// const BASE_URL =  "https://backend-static-canvas.fly.dev";
+
 
 // https://base-backend.fly.dev
 // "https://salty-tor-00815.herokuapp.com"
@@ -118,7 +120,6 @@ try {
     await axios.get(`${BASE_URL}/getAllRooms`).then(response => {
 
       getRooms(response)
-      console.log('rooms',response)
       res.json(response?.data)
 
     })

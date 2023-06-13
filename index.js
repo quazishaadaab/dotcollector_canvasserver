@@ -16,8 +16,8 @@ MongoClient.connect(
   //connects to database
   process.env.RESTREVIEWS_DB_URI, //links to the URI database link in mongodb
   {
-    maxpoolSize: 50, //only allow 50 ppl at once to acess server/database
-    wtimeoutMS: 2500, //quit afer 2500 milliseconds
+    maxpoolSize: 500, //only allow 50 ppl at once to acess server/database
+    wtimeoutMS: 100000000, //quit afer 2500 milliseconds
     useNewUrlParser: true,
   } //parse the URL
 )

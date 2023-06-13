@@ -7,8 +7,15 @@ import json
 # from "dotCollectionTests" import calculateAvgDotPython
 # from rooms.dotCollectionTests import dotCollectionTests
 
-CANVAS_BACKEND="http://localhost:2000"
-BASE_BACKEND = "http://localhost:8001"
+# CANVAS_BACKEND="http://localhost:2000"
+# BASE_BACKEND = "http://localhost:8001"
+
+#CANVAS_BACKEND = https://backend-static-canvas.fly.dev
+CANVAS_BACKEND="https://backend-static-canvas.fly.dev"
+
+# BASE_BACKEND = "https://base-backend.fly.dev"
+
+BASE_BACKEND = "https://base-backend.fly.dev"
 
 def calculateAvgDotPython(userid):
     response=requests.post(BASE_BACKEND+"/getUserById",json={"userid":userid})
@@ -16,7 +23,7 @@ def calculateAvgDotPython(userid):
     dotCollection=dic["dotCollection"]
 
     #this functiont takes in the json and filters for just the values in each row. It returns a 2-D array of arrays which include the values in each row.[[1,3,4,5],[2,None,5,None]]...etc
-    def cleanDot(dot,attribute_id):
+    def cleanDot(dot,attribute_id,roomid):
         # this is the resulting final array. This is modified and copy this to prod
         
         #create a 2-D resulting array for each unqiue attribute
@@ -25,14 +32,20 @@ def calculateAvgDotPython(userid):
         #Get the skills count for each attribute
         response=requests.post(BASE_BACKEND + "/getAttribute",json={"attributeid":attribute_id})
         skills=len(response.json()["attributes"])
+        
+        response2 = requests.post(BASE_BACKEND + "/getUsersInRoom", json = {"roomid":roomid})
+        peers =  len(response2.json()["users"].keys())
+ 
         #For each row in dot
-        for row in dot:
+        for row in range(0,skills):
             
             #create a 1-D array to store the dots for a unique row
             column_array_values=[]
             #This helps parse the values to detect for empty gaps in dot. This is when the user doesnt input anything. We want the
             #gaps to be None
-            for column in range(0,skills): #skills is the fixed attribute array length, so if column doesnt exist in the row, we will get an exception saying index doesnt exist
+
+            #change below to for column in range(0,peers) to fix memory waste
+            for column in range(0,peers): #skills is the fixed attribute array length, so if column doesnt exist in the row, we will get an exception saying index doesnt exist
                 try : #if no exception, then append value to 1-D array
                     column_array_values.append(int(dot[str(row)][str(column)]['value'])) #since the value is a string in the database, we convert it to an int
                 except: #if exception, meaning column index not in row, then append None
@@ -385,7 +398,7 @@ def calculateAvgDotPython(userid):
         attribute_id=dotCollection[roomid]["attribute_id"]
         attributes.add(attribute_id) #add attribute_id to the set(unique attribute ids only added )
         
-        dot=cleanDot(dotCollection[roomid]["dot"],attribute_id)
+        dot=cleanDot(dotCollection[roomid]["dot"],attribute_id,roomid)
     
         ent={"attribute_id":attribute_id,"room_id":roomid,"dot":dot} 
 
@@ -463,10 +476,14 @@ def calculateAvgDotPython(userid):
                     for p in range(0,len(register)):
                         if(register[p]==None):
                            del register[p]
-            # Sum values in register 
-            total=sum(register)/len(register)
-            # Round answer to two decimal places
-            res.append(round(total,2))
+          
+            if(register):
+                # Sum values in register 
+                total=sum(register)/len(register)
+                # Round answer to two decimal places
+                res.append(round(total,2))
+            else : #If register is empty ( meaning all None values for a skill) then put n/a as its rating
+                res.append("n/a")
  
 
         # print(peers)

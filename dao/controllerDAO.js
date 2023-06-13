@@ -88,14 +88,13 @@ let out=''
 
   //SEND
   //this is input data being passed to python 
-  const python_process = spawners('python3', ['/Users/quazishaadaab/Desktop/programming-projects/backend-static_canvas/dao/calculateRatings_preprod-v2.py', data_to_pass_in])
+  const python_process = spawners('python3', [`${process.cwd()}/dao/calculateRatings_preprod-v2.py`, data_to_pass_in])
 
   //RECEIVE
   //this is the data being received from python output.
   python_process.stdout.on('data', (data) => {
 
     let buffer= JSON.parse(data.toString())
-    console.log("Data received from python script : ",  JSON.parse(data.toString()));
     users.updateMany({userid:userid},{$set:{'ratings': buffer}})
         
   })
@@ -118,7 +117,6 @@ catch(e){
 
 
 static async updateDotInUser(userid,roomid,dot,attribute_id){
-
   try {
     // javascript canot process back ticks in runtime, so we need to use brackets around it
 
@@ -128,6 +126,7 @@ static async updateDotInUser(userid,roomid,dot,attribute_id){
       { $set: { [`dotCollection.${roomid}`]: dotCollectionDoc } },
       {upsert:true}
     );
+    console.log(dotCollectionDoc)
 
     // dot.map(async (array) => {
     //   await users.updateMany(
@@ -184,7 +183,9 @@ static async updateDotInUser(userid,roomid,dot,attribute_id){
      const cursor= await users.find({'userid':userid }).toArray()
       return await (cursor[0])
 
-    } catch(e){console.log(e)}
+    } catch(e){
+
+    }
   }
 
 
@@ -196,7 +197,7 @@ static async updateDotInUser(userid,roomid,dot,attribute_id){
      
       return await (t)
 
-    } catch(e){console.log(e)}
+    } catch(e){}
   }
 
 
