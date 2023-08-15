@@ -5,11 +5,22 @@
 
 // import sandbox from "../server.js"
 
-
+//make this a class and make all these variables its instance variables
+//initiate this class also
 async function create() {
+ // "http:localhost2000/"
+//  const BASE_URL_1="http://localhost2000"
+
+    const BASE_URL_1="https://backend-static-canvas.fly.dev"
+    // router
+    // `http://localhost:${process.env.PORT_BASE}`
+    // const BASE_URL_2 = "https://base-backend.fly.dev"
+
+    // const BASE_URL_2 = `http://localhost:8001`
+    const BASE_URL_2 = "https://base-backend.fly.dev"
 
 
-
+    var speaker
 
     var c = document.getElementById("mycanvas")
     var ctx = c.getContext("2d");
@@ -35,35 +46,15 @@ async function create() {
     let mousePointerCol
     let mousePointerRow
   
-    let individualDot // type object
-  
-  
-  
-  
-  
-    var retrivedDotArray
-  
-  
-    // dotrouter
-    // 'https://sleepy-dawn-45361.herokuapp.com' || "http:localhost2000/"
-    const BASE_URL_1 ="https://backend-static-canvas.fly.dev"
-    // router
-    // const BASE_URL_2 = 'https://salty-tor-00815.herokuapp.com' || `http://localhost:${process.env.PORT_BASE}`
-  
-    // const BASE_URL_2 = `http://localhost:8001`
-    const BASE_URL_2 = `https://base-backend.fly.dev`
-
-    //assign row and col length here
-  
-  
     var string = JSON.stringify(window.location.pathname)
     var id = string.substring(8, 44)
   
     //
     async function helper() {
   
-      const { data: { roomdata: { attributeid,users } } } = await axios.post(`${BASE_URL_2}/getRoomById`, { roomid: id })
+      const { data: { roomdata: { attributeid,users,speakerid } } } = await axios.post(`${BASE_URL_2}/getRoomById`, { roomid: id })
   
+      speaker = speakerid
       const response = await axios.post(`${BASE_URL_2}/getAttribute`, { attributeid: attributeid })
       console.log('mithu', response?.data?.attributes?.length)
   
@@ -85,10 +76,10 @@ async function create() {
   
     }
   
-  
+
     await helper()
     
-  
+
     console.log('sadiya', wide)
   
     //repeated , already declared c as mycanvas
@@ -123,7 +114,6 @@ async function create() {
       canvas.style.height = `${long}px`;
     }
   
-  //set background color of whole canvas
   
   
   
@@ -190,35 +180,9 @@ async function create() {
   
     }
   
-  
-  
     const s = new Setup(wide, long, long / (pixel_width), wide / (pixel_width));
   
-  
-  
-  
-  //dont use anymore
-    function setup() {
-      createCanvas(s.wide, s.long);
-      noLoop()
-  
-  
-    }
-  //dont use anymore
-    function draw() {
-      background('red');
-      //   let mousePointerCol =ColSelector(winMouseX,s.cols,s.wide)
-      // let mousePointerRow=RowSelector(winMouseY,s.rows,s.long)
-  
-      drawCleanerLine(s.rows, s.cols, s.gap_h, s.gap_v, s.wide, s.long);
-      if (mouseIsPressed) {
-        mousePressed()
-      }
-  
-    }
-  
-  
-  
+ 
   
     let grid = new Array(s.rows)
   
@@ -273,11 +237,7 @@ async function create() {
       }
   
     }
-  
-  
-  
-    // axios.put(`${BASE_URL_2}/updateDotInRoom`, { roomid: id, dot: grid })
-  
+    
     function populateGridFoundation() {
   
   
@@ -304,10 +264,7 @@ async function create() {
     }
   
   
-  
     populateGridFoundation()
-  
-  
   
   
     function drawRectangle(row, column, x, y, color, gap_h, gap_v, value) {
@@ -325,39 +282,18 @@ async function create() {
     }
   
   
-  
-  
-    console.log('realid', id)
-  
-  
-  
     async function loadDotsbyRoomId() {
   
+      console.log("shake",speaker)
+      await axios.post(`${BASE_URL_2}/getUserById`, { userid: speaker }).then((response) => {
   
-      await axios.post(`${BASE_URL_2}/getRoomById`, { roomid: id }).then((response) => {
-  
-        const dotarray = response?.data?.roomdata?.dot
+        const dotarray = response?.data?.dotCollection[id].dot
+        console.log('kanyeresponse',response)
+
+        // console.log('kanyend',dotarray)
         retrivedDotArray = dotarray
   
         console.log('dotarrray', dotarray)
-  
-        //assign grid variable to dotarray(pulled grid from database)
-        // dotarray?.map(cols => {
-        //   console.log('sultan',cols)
-  
-        //   cols?.map(rows => {
-        //     if (rows) {
-        //       drawRectangle(rows?.row, rows?.column, rows?.x, rows?.y, rows?.color, rows?.gap_h, rows?.gap_v, rows?.value)
-  
-  
-        //     }
-        //   })
-  
-          
-  
-        // })
-  
-  
         //dont use map . its buggy, use a for loop instead .
         for(let colum in dotarray){
           for (let row in dotarray[colum]){
@@ -379,23 +315,10 @@ async function create() {
       })
     }
   
-  
     loadDotsbyRoomId()
   
     console.log('the grid', grid)
   
-  
-  
-  
-  
-  
-  
-    //drawInput : 
-    //x: is the PIXEL value of where horizontal dot should be placed
-    //y: is the PIXEL value of where vertical dot should be placed
-    //h: is the PIXEL value of horizontal gap used to draw the rectange
-    //v: is the PIXEL value of vertical gap used to draw the rectange
-    //d: is the dot object that we will mutate and change
   
     function drawInput(x, y) {
       var input = document.createElement("input")//will create a new input tag each time clicked.
@@ -435,6 +358,9 @@ async function create() {
           grid[x - 1][y - 1] = tempDot; //put grid and d.value in this eventlistener because we only want to update the grid when enter is pressed.
   
           postDotbyRowandCol(tempDot)
+          // Need to reset the input once enter has been hit and a value has been set. This was included when we added in the user switch functionality where we change the grid load based off the speaker chosen.
+          input.value=null
+
           console.log(e.target.value)
         }
       })
@@ -453,10 +379,6 @@ async function create() {
       //  this.input.size(this.gap_h/5);
       // this.value=this.input.value();
     }
-  
-  
-  
-  
   
     function drawLine(rows, cols, gap_h, gap_v, wide, long) {
       for (let i = 1; i <= cols - 1; i++) {
@@ -478,9 +400,6 @@ async function create() {
         ctx.stroke()
       }
     }
-  
-  
-  
     function mousePressed(e) {
   
       var xCoord = e.clientX
@@ -501,129 +420,18 @@ async function create() {
       drawInput(mousePointerRow, mousePointerCol)
       console.log(mousePointerRow, mousePointerCol)
     }
-  
-  
-  
-  
     window.mousePressed = mousePressed;
-  
-  
-  
-  
-  
-    // for(let i=0;i<20;i++){
-    //   ctx.font = "15px Arial";
-    //   ctx.fillText("Hello World", 110, 50);
-  
-    // }
-  
-    // var header = document.getElementById('header')
-  
-  
-    // let arr=["jjjjjjjoihoubib","mello","sello"]
-  
-    // for (const skill in arr){
-    //   var attributes = document.createElement("attributes");
-    //   attributes.style.overflow='hidden'
-    // attributes.style.textOverflow='ellipsis'
-    // attributes.style.whiteSpace='nowrap'
-  
-    //   var text = document.createTextNode(`${arr[skill]}`);
-  
-  
-  
-  
-    //   attributes.append(text)
-  
-  
-  
-    //   header.appendChild(attributes);
-  
-    // }
-  
-  
-    // Object.assign(attributes.style,custom_style);
-  
-  
   
     drawLine(long / pixel_width, wide / pixel_width, pixel_width, pixel_width, wide, long)
   
-  
-  
-  
-  
-  
     console.log(id, grid)
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-    var buffer
-    //this is the speaker id (user whos dot gets registered)
-    let speakerid
-    // let sid=  await (r?.data?.roomdata?.speakerid)
-  
-    //doesnt get execute
-    async function promiseSpeaker() {
-  
-      await axios.post(`${BASE_URL_2}/getRoomById`, { roomid: id }).then(async r => {
-  
-  
-        let speaker = await r?.data?.roomdata?.speakerid
-        const retrivedDotArray = r?.data?.roomdata?.dot
-        speakerid = speaker
-  
-  
-        await axios.put(`${BASE_URL_1}/updateDotInUser`, { userid: speakerid, roomid: id, dot: retrivedDotArray })
-  
-      }
-      )
-    }
-  
-  
-    // getSpeaker().then(async r=>{ speakerid=await r })
-  
-  //doesnt get execute
-    async function postGrid(e) {
-  
-      console.log("submitted")
-      console.log('FFFFF', grid)
-      console.log('id', id)
-      console.log('retrivedDotArray', retrivedDotArray)
-      //when we click submit, we want to update the dot in user , not in rooms. the dot is already being inserted in rooms when we
-      //click enter . we want to update/insert the dot in user when someone clicks post dot
-  
-  
-      await axios.put(`${BASE_URL_1}/updateDotInUser`, { userid: speakerid, dot: retrivedDotArray })
-  
-  
-      promiseSpeaker()
-  
-  
-      // need to specify the speaker/user id for this to work 
-  
-      // await import('./services/service.js').then((response)=>{
-      // response.postDot(gridDoc);
-      // })
-  
-  
-    }
-  
-  
   
     async function postDotbyRowandCol(tempDot) {
   
   
-      await axios.put(`${BASE_URL_2}/updateDotRowandCol`, { roomid: id, dot: tempDot })
-  
+      await axios.put(`${BASE_URL_2}/updateDotRowandCol`, { userid:speaker,roomid: id, dot: tempDot })
     }
-    // DataService.postDot(gridDoc)
+    
   
   }
   

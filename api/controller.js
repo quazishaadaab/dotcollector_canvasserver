@@ -69,9 +69,9 @@ static async getDotCollectionCount(req,res,next){
     
     const userid = await req.body.userid
 
-    res.json(req?.body)
 
-    ControllerDAO.updateRatings(userid)
+    const result = await ControllerDAO.updateRatings(userid) ;
+    res.json(result)
 
 
   }

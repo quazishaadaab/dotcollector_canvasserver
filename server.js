@@ -52,9 +52,10 @@ const __dirname = path.resolve();
 //  console.log(__dirname);
 // const id = Controller.data;
 
-// var id= Controller.giveData()
+// var id= Controller.giveData()'
+const BASE_URL =  "http://localhost:2000";
 
-const BASE_URL =  "https://backend-static-canvas.fly.dev";
+// const BASE_URL =  "https://backend-static-canvas.fly.dev";
 // const BASE_URL =  "https://backend-static-canvas.fly.dev";
 
 
@@ -78,8 +79,8 @@ let roomid_array
 
 var buffer = []
 
+//Creates sandboxes for each room in database
 async function getRooms(response, res, req) {
-
 
 
   // to wait for all the data to collect in one array
@@ -91,12 +92,11 @@ async function getRooms(response, res, req) {
     buffer?.push(r?.roomid)
     setIdArray(buffer)
 
+  //need to learn the inner workings of node use function and static file functionality. What is the memory usage ? 
+  //Is it storing or overriding if called twice ?
     async function createSandboxElement(id) {
       return sandbox.use(`/rooms/${id}`, express.static(__dirname + "/src"));
     };
-
-
-
 
  createSandboxElement(r?.roomid);
 
@@ -110,16 +110,14 @@ async function getRooms(response, res, req) {
 };
 
 
-
+//Executes the creation of sandboxes
 try {
   // need to put await here due to it being a promise. if we dont , the result array will not be filled
-
   sandbox.get("/launch", async (req, res) => {
 
-
+console.log("***Launching***")
     await axios.get(`${BASE_URL}/getAllRooms`).then(response => {
-
-      getRooms(response)
+      getRooms(response) //creates sandboxes
       res.json(response?.data)
 
     })
@@ -128,6 +126,9 @@ try {
 } catch (error) {
   console.log(error)
 }
+
+// setInterval(function () {sandbox.use(`/rooms/7fa6732a-0eef-4ecb-932d-880b2dab0eaa`, express.static(__dirname + "/src"));}, 1000);
+
 
 // id.push(room_id_data)
 

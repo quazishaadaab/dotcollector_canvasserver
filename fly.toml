@@ -1,4 +1,4 @@
-# fly.toml file generated for backend-static-canvas on 2023-05-15T21:46:12-04:00
+# fly.toml file generated for backend-static-canvas on 2023-06-15T08:18:43-04:00
 
 app = "backend-static-canvas"
 kill_signal = "SIGINT"
@@ -17,7 +17,6 @@ processes = []
 [[services]]
   http_checks = []
   internal_port = 8080
-  min_machines_running = 0
   processes = ["app"]
   protocol = "tcp"
   script_checks = []

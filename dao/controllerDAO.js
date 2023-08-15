@@ -2,6 +2,7 @@
 
 
 import { createRequire } from "module";
+
 const require = createRequire(import.meta.url);
 const spawners = require('child_process').spawn;
 
@@ -16,6 +17,9 @@ let grid;
 
 
 export default class ControllerDAO {
+
+
+  
   static async injectDB(conn) {
     if (rooms) {
       return;
@@ -30,6 +34,7 @@ export default class ControllerDAO {
   }
 
 
+  
   static async injectDB_Users(conn) {
     if (users) {
       return;
@@ -96,7 +101,7 @@ let out=''
 
     let buffer= JSON.parse(data.toString())
     users.updateMany({userid:userid},{$set:{'ratings': buffer}})
-        
+    return buffer    
   })
 
 }
@@ -202,6 +207,39 @@ static async updateDotInUser(userid,roomid,dot,attribute_id){
 
 
 
+
+   static async listener(){
+
+    const simulateAsyncPause = () =>
+  new Promise(resolve => {
+    setTimeout(() => resolve(), 1000);
+  });
+    let changeStream;
+    async function run() {
+      try {
+          console.log('nirvana')
+        // Open a Change Stream on the "haikus" collection
+        changeStream = rooms.watch();
+        // Print change events
+       // set up a listener when change events are emitted
+       changeStream.on("change", next => {
+        // process any change event
+        console.log("received a change to the collection: \t", next);
+      });
+      await simulateAsyncPause();
+      await rooms.insertOne({
+        title: "Record of a Shriveled Datum",
+        content: "No bytes, no problem. Just insert a document, in MongoDB",
+      });
+      await simulateAsyncPause();
+        await changeStream.close();
+        
+      } catch(e){console.log(e)}
+    }
+    run().catch(console.dir);
+    
+
+  }
 
 
 
