@@ -19,33 +19,7 @@ sandbox.use(cors());
 sandbox.use(express.json());
 sandbox.use("/", dotrouter);
 
-//  const MongoClient = mongodb.MongoClient;
-//  //initialize port specefied in .env file. server port is 8000
 
-//  //set custmized properties for database
-//  MongoClient.connect(
-//    //connects to database
-//    process.env.RESTREVIEWS_DB_URI, //links to the URI database link in mongodb
-//    {
-//      maxpoolSize: 50, //only allow 50 ppl at once to acess server/database
-//      wtimeoutMS: 2500, //quit afer 2500 milliseconds
-//      useNewUrlParser: true,
-//    } //parse the URL
-//  )
-//    .catch((err) => {
-//      //catch any error if database connection goes wrong
-//      console.error(err.stack);
-//      process.exit(1);
-//    })
-//    .then(async (client) => {
-//      // async client i dont know much about
-//      await ControllerDAO.injectDB(client); //    // before anything loads, we connect to the restaurants collection.
-//      //if promise is fufilled(connection succesful then we to the below)
-
-//      sandbox.listen(ports, () => {
-//        console.log(`listening on port 2000`); //prints which port is being used
-//      });
-//    });
 
 
 const __dirname = path.resolve();
@@ -53,9 +27,9 @@ const __dirname = path.resolve();
 // const id = Controller.data;
 
 // var id= Controller.giveData()'
-const BASE_URL =  "http://localhost:2000";
+// const BASE_URL =  "http://localhost:2000";
 
-// const BASE_URL =  "https://backend-static-canvas.fly.dev";
+const BASE_URL =  "https://backend-static-canvas.fly.dev";
 // const BASE_URL =  "https://backend-static-canvas.fly.dev";
 
 

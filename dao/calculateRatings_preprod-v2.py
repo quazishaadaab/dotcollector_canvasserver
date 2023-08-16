@@ -7,13 +7,13 @@ import json
 # from "dotCollectionTests" import calculateAvgDotPython
 # from rooms.dotCollectionTests import dotCollectionTests
 
-CANVAS_BACKEND="http://localhost:2000"
-BASE_BACKEND = "http://localhost:8001"
+# CANVAS_BACKEND="http://localhost:2000"
+# BASE_BACKEND = "http://localhost:8001"
 
 # CANVAS_BACKEND = "https://backend-static-canvas.fly.dev"
-# CANVAS_BACKEND="https://backend-static-canvas.fly.dev"
+CANVAS_BACKEND="https://backend-static-canvas.fly.dev"
 
-# BASE_BACKEND = "https://base-backend.fly.dev"
+BASE_BACKEND = "https://base-backend.fly.dev"
 
 # BASE_BACKEND = "https://base-backend.fly.dev"
 

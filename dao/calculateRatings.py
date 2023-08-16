@@ -7,6 +7,7 @@ import json
 # from "dotCollectionTests" import calculateAvgDotPython
 # from rooms.dotCollectionTests import dotCollectionTests
 
+# this file is useless, its been replaced with the preprod-v2 file (which is actually prod and should be renamed)
 CANVAS_BACKEND="http://localhost:2000"
 BASE_BACKEND = "http://localhost:8001"
 
