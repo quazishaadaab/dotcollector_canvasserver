@@ -5,17 +5,17 @@
 //initiate this class also
   // "http:localhost2000/"
 
-  const BASE_URL_1="https://backend-static-canvas.fly.dev"
+   const BASE_URL_1="https://backend-static-canvas.fly.dev"
   // router
   // `http://localhost:${process.env.PORT_BASE}`
-  const BASE_URL_2 = "https://base-backend.fly.dev"
+  // const BASE_URL_2 = "https://base-backend.fly.dev"
 
   // const BASE_URL_2 = `http://localhost:8001`
   // const BASE_URL_1 = `http://localhost:2000`
 
  //connects to restaurant API
 
-  // const BASE_URL_2 = "https://base-backend.fly.dev"
+   const BASE_URL_2 = "https://base-backend.fly.dev"
 
 
   var speaker=''

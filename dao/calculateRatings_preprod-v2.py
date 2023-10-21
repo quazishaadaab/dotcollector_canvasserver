@@ -10,12 +10,13 @@ import json
 # CANVAS_BACKEND="http://localhost:2000"
 # BASE_BACKEND = "http://localhost:8001"
 
-# CANVAS_BACKEND = "https://backend-static-canvas.fly.dev"
+
+
+
+
 CANVAS_BACKEND="https://backend-static-canvas.fly.dev"
 
 BASE_BACKEND = "https://base-backend.fly.dev"
-
-# BASE_BACKEND = "https://base-backend.fly.dev"
 
 def calculateAvgDotPython(userid):
     response=requests.post(BASE_BACKEND+"/getUserById",json={"userid":userid})
