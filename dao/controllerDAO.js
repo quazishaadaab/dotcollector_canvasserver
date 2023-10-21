@@ -88,8 +88,8 @@ static async updateRatings(userid){
 
 try{
 
-let out=''
-  const data_to_pass_in = await userid;
+var res
+const data_to_pass_in = await userid;
 
   //SEND
   //this is input data being passed to python 
@@ -97,16 +97,18 @@ let out=''
 
   //RECEIVE
   //this is the data being received from python output.
-  python_process.stdout.on('data', (data) => {
+  python_process.stdout.on('data', async (data) => {
 
-    let buffer= JSON.parse(data.toString())
+    let buffer= await JSON.parse(data.toString())
     users.updateMany({userid:userid},{$set:{'ratings': buffer}})
-    return buffer    
+    console.log('ratings results: 1q1``1`',buffer)
+    return buffer
   })
 
 }
 catch(e){
   console.log(e)
+  return(`${e}, there has been an error.`)
 }
 
 
